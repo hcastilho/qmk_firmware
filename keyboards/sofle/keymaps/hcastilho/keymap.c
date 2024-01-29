@@ -369,11 +369,27 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     // Left Encoder
     if (index == 0) {
         if (IS_LAYER_ON(_RAISE)) {
-            // Tab Browser Tabs
+            // // Tab Browser Tabs
+            // if (clockwise) {
+            //     tap_code16(C(KC_TAB));
+            // } else {
+            //     tap_code16(S(C(KC_TAB)));
+            // }
+            // Tab Windows of same app
             if (clockwise) {
-                tap_code16(C(KC_TAB));
-            } else {
-                tap_code16(S(C(KC_TAB)));
+                if (!is_alt_tab_active) {
+                    is_alt_tab_active = true;
+                    register_code(KC_LALT);
+                }
+                alt_tab_timer = timer_read();
+                tap_code16(KC_GRV);
+                } else {
+                if (!is_alt_tab_active) {
+                    is_alt_tab_active = true;
+                    register_code(KC_LALT);
+                }
+                alt_tab_timer = timer_read();
+                tap_code16(S(KC_GRV));
             }
         } else {
             // Tab Windows
@@ -383,14 +399,14 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                     register_code(KC_LALT);
                 }
                 alt_tab_timer = timer_read();
-                tap_code16(KC_ESC);
+                tap_code16(KC_TAB);
                 } else {
                 if (!is_alt_tab_active) {
                     is_alt_tab_active = true;
                     register_code(KC_LALT);
                 }
                 alt_tab_timer = timer_read();
-                tap_code16(S(KC_ESC));
+                tap_code16(S(KC_TAB));
             }
         }
     } else if (index == 1) {
