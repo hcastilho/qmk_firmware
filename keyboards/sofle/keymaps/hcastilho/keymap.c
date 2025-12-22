@@ -35,7 +35,7 @@ enum {
 
 // 2. Define the "Finished" function
 // This runs when the tapping term expires or you press another key
-void shift_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
+void shift_caps_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
         // Single Tap/Hold: Act as Shift
         register_code(KC_LSFT);
@@ -47,7 +47,7 @@ void shift_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
 
 // 3. Define the "Reset" function
 // This runs when the key is released
-void shift_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
+void shift_caps_reset(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
         // Release Shift
         unregister_code(KC_LSFT);
@@ -56,7 +56,7 @@ void shift_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 // 4. Register the Tap Dance Action
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
     // Action: Advanced (Calls our custom functions)
     [TD_SFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_caps_finished, shift_caps_reset)
 };
@@ -81,10 +81,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_QWERTY] = LAYOUT(
-  KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_GRV,
-  KC_ESC,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
-  KC_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENT,    KC_MUTE, KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
+  KC_GRV,           KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_GRV,
+  KC_ESC,           KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
+  KC_TAB,           KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
+  TD(TD_SFT_CAPS),  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENT,    KC_MUTE, KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
                  KC_LGUI,KC_LALT,  KC_LCTL,  KC_SPC, MO(_LOWER),   MO(_RAISE),  KC_ENT, KC_RCTL, KC_RALT, KC_RGUI
 ),
 /*
