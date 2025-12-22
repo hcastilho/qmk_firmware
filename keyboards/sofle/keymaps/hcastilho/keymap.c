@@ -16,7 +16,8 @@ enum custom_keycodes {
     KC_NXTWD,
     KC_LSTRT,
     KC_LEND,
-    KC_DLINE
+    KC_DLINE,
+    KC_4SPC
 };
 
 bool is_alt_tab_active = false;
@@ -26,7 +27,8 @@ uint16_t alt_tab_timer = 0;
 #define KC_CUT LCTL(LSFT(KC_X))
 #define KC_PASTE LCTL(LSFT(KC_V))
 
-// Tap Dance: Double tap shift for caps lock
+// ********************************************************
+// Tap Dance: Double tap shift for caps lock word
 // ********************************************************
 // 1. Define the Tap Dance Enum
 enum {
@@ -41,7 +43,7 @@ void shift_caps_finished(tap_dance_state_t *state, void *user_data) {
         register_code(KC_LSFT);
     } else if (state->count == 2) {
         // Double Tap: Toggle Caps Lock
-        tap_code(KC_CAPS);
+        tap_code16(CW_TOGG);
     }
 }
 
@@ -62,6 +64,47 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 // ********************************************************
 
+// **********************************************
+// Combo Configuration
+// **********************************************
+enum combos {
+    JK_ESC,
+    DF_4SPC_COMBO  // Name of the combo
+};
+
+// Define the keys to press
+const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
+
+// Register the combo
+combo_t key_combos[] = {
+    [JK_ESC] = COMBO(jk_combo, KC_ESC),
+    [DF_4SPC_COMBO] = COMBO(df_combo, KC_4SPC) // Trigger our custom keycode
+};
+
+
+
+// **********************************************
+// Leader Key Definitions
+// Note: You must map KC_LEAD somewhere on your
+// keymap (e.g., on a RAISE layer) to trigger
+// the leader sequences.
+// **********************************************
+// void leader_end_user(void) {
+//     // Sequence: Leader -> G -> S (Git Status)
+//     if (leader_sequence_two_keys(KC_G, KC_S)) {
+//         SEND_STRING("git status");
+//         tap_code(KC_ENT);
+//     }
+//     // Sequence: Leader -> E -> M (Email)
+//     if (leader_sequence_two_keys(KC_E, KC_M)) {
+//         SEND_STRING("my.email@gmail.com");
+//     }
+//     // Sequence: Leader -> S -> S (Lock Screen - Win+L)
+//     if (leader_sequence_two_keys(KC_S, KC_S)) {
+//         tap_code16(G(KC_L));
+//     }
+// }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
@@ -72,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | ESC  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  | Bspc |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Tab  |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
- * |------+------+------+------+------+------| Enter |    | Mute  |------+------+------+------+------+------|
+ * |------+------+------+------+------+------| Enter |    | App   |------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |RShift|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            | LGUI | LAlt | LCTR |Space | /LOWER  /       \RAISE \  |Enter | RCTR | RAlt | RGUI |
@@ -84,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,           KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_GRV,
   KC_ESC,           KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
   KC_TAB,           KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
-  TD(TD_SFT_CAPS),  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENT,    KC_MUTE, KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
+  TD(TD_SFT_CAPS),  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENT,    KC_APP, KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
                  KC_LGUI,KC_LALT,  KC_LCTL,  KC_SPC, MO(_LOWER),   MO(_RAISE),  KC_ENT, KC_RCTL, KC_RALT, KC_RGUI
 ),
 /*
@@ -95,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | ESC  |   Q  |   W  |   F  |   P  |   G  |                    |   J  |   L  |   U  |   Y  |   ;  | Bspc |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | TAB  |   A  |   R  |   S  |   T  |   D  |-------.    ,-------|   H  |   N  |   E  |   I  |   O  |  '   |
- * |------+------+------+------+------+------| Enter |    | MUTE  |------+------+------+------+------+------|
+ * |------+------+------+------+------+------| Enter |    | App   |------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   K  |   M  |   ,  |   .  |   /  |RShift|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            | LGUI | LAlt | LCTR |Space | /LOWER  /       \RAISE \  |Enter | RCTR | RAlt | RGUI |
@@ -107,7 +150,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_GRV,
   KC_ESC,   KC_Q,   KC_W,    KC_F,    KC_P,    KC_G,                      KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN,  KC_BSPC,
   KC_TAB,   KC_A,   KC_R,    KC_S,    KC_T,    KC_D,                      KC_H,    KC_N,    KC_E,    KC_I,    KC_O,  KC_QUOT,
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENTER,   KC_MUTE, KC_K,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENTER,   KC_APP, KC_K,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
                  KC_LGUI,KC_LALT,  KC_LCTL, KC_SPC,MO(_LOWER),      MO(_RAISE),  KC_ENT, KC_RCTL, KC_RALT, KC_RGUI
 ),
 /* LOWER
@@ -116,8 +159,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |  _   |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Tab  |   !  |   @  |   #  |   $  |   %  |-------.    ,-------|   ^  |   &  |   *  |   (  |   )  |   |  |
- * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
+ * |  ~   |   !  |   @  |   #  |   $  |   %  |-------.    ,-------|   ^  |   &  |   *  |   (  |   )  |   |  |
+ * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
  * | Shift|  =   |  -   |  +   |   {  |   }  |-------|    |-------|   [  |   ]  |   ;  |   :  |   \  | Shift|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            | LGUI | LAlt | LCTR |Space | /LOWER  /       \RAISE \  |Enter | RCTR | RAlt | RGUI |
@@ -137,8 +180,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Esc  | Ins  | Pscr | Menu |      |      |                    | PUp  | PWrd |  Up  | NWrd | DLine| Bspc |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Tab  | LAt  | LCtl |LShift|      | Caps |-------.    ,-------|      | Left | Down | Rigth|  Del | Bspc |
- * |------+------+------+------+------+------| Enter |    | Mute  |------+------+------+------+------+------|
+ * | Tab  | LAt  | LCtl |LShift|      | Caps |-------.    ,-------| PDwn | Left | Down | Rigth|  Del | Bspc |
+ * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
  * |Shift | Undo |  Cut | Copy | Paste|      |-------|    |-------|      | LStr |      | LEnd |      | Shift|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            | LGUI | LAlt | LCTR |Space | /LOWER  /       \RAISE \  |Enter | RCTR | RAlt | RGUI |
@@ -153,24 +196,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                          _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
 ),
 /* ADJUST
- * ,-----------------------------------------.                    ,-----------------------------------------.
- * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | QK_BOOT|      |QWERTY|COLEMAK|      |      |                    |      |      |      |      |      |      |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |MACWIN|      |      |      |-------.    ,-------|      | VOLDO| MUTE | VOLUP|      |      |
- * |------+------+------+------+------+------| Enter |    | Mute  |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------|    |-------|      | PREV | PLAY | NEXT |      |      |
- * `-----------------------------------------/       /     \      \-----------------------------------------'
- *            | LGUI | LAlt | LCTR |Space | /LOWER  /       \RAISE \  |Enter | RCTR | RAlt | RGUI |
- *            |      |      |      |      |/       /         \      \ |      |      |      |      |
- *            `----------------------------------'           '------''---------------------------'
+ * ,----------------------------------------------------.                    ,--------------------------------------------------.
+ * | QK_BOOT |      |        |         |       |        |                    |        |        |         |      |      |         |
+ * |---------+------+--------+---------+-------+--------|                    |--------+--------+---------+------+------+---------|
+ * |         |      | QWERTY | COLEMAK |       |        |                    |        | WUP    | BTN1    | MUP  | BTN2 | WD      |
+ * |---------+------+--------+---------+-------+--------|                    |--------+--------+---------+------+------+---------|
+ * |         |      | VOLD   | MUTE    | VOLUP | MACWIN |-------.    ,-------|        |        | MLEFT   | MD   | MR   |         |
+ * |---------+------+--------+---------+------+---------| Enter |    | Mute  |--------+--------+---------+------+------+---------|
+ * |         |      | PREV   | PLAY    | NEXT |         |-------|    |-------|        |        |         |      |      |         |
+ * `---------------------------------------------------/       /     \      \--------------------------------------------------'
+ *                      | LGUI | LAlt | LCTR |Space | /LOWER  /       \RAISE \  |Enter | RCTR | RAlt | RGUI |
+ *                      |      |      |      |      |/       /         \      \ |      |      |      |      |
+ *                      `----------------------------------'           '------''---------------------------'
  */
   [_ADJUST] = LAYOUT(
-  XXXXXXX , XXXXXXX,  XXXXXXX ,  XXXXXXX , XXXXXXX, XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  QK_BOOT  , XXXXXXX,KC_QWERTY,KC_COLEMAK,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX , XXXXXXX,CG_TOGG, XXXXXXX,    XXXXXXX,  XXXXXXX,                     XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,
-  XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,  XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,
+  QK_BOOT, XXXXXXX,  XXXXXXX,  XXXXXXX,    XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, KC_QWERTY, KC_COLEMAK, XXXXXXX, XXXXXXX,                       MS_WHLD, MS_BTN1, MS_UP, MS_BTN2, MS_WHLU, XXXXXXX,
+  XXXXXXX, XXXXXXX, KC_VOLD,   KC_MUTE,    KC_VOLU, CG_TOGG,                       MS_WHLL, MS_LEFT, MS_DOWN, MS_RGHT, MS_WHLR, XXXXXXX,X,
+  XXXXXXX, XXXXXXX, KC_MPRV,   KC_MPLY,    KC_MNXT, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
   )
 };
@@ -387,6 +430,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_Z);
             }
             return false;
+        case KC_4SPC:
+            if (record->event.pressed) {
+                SEND_STRING("    "); // Sends 4 spaces
+            }
+            return false; // Tell QMK we handled it manually
     }
     return true;
 }
@@ -434,6 +482,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 if (!is_alt_tab_active) {
                     is_alt_tab_active = true;
                     register_code(KC_LALT);
+                    wait_ms(10); // Give OS time to see ALT is held down
                 }
                 alt_tab_timer = timer_read();
                 tap_code16(KC_TAB);
@@ -441,6 +490,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 if (!is_alt_tab_active) {
                     is_alt_tab_active = true;
                     register_code(KC_LALT);
+                    wait_ms(10); // Give OS time to see ALT is held down
                 }
                 alt_tab_timer = timer_read();
                 tap_code16(S(KC_TAB));
@@ -448,18 +498,18 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         }
     } else if (index == 1) {
         if (IS_LAYER_ON(_LOWER)) {
-            // Volume Up/Down
+            // Mouse whell left/right
             if (clockwise) {
-                tap_code(KC_VOLU);
+                tap_code(QK_MOUSE_WHEEL_RIGHT);
             } else {
-                tap_code(KC_VOLD);
+                tap_code(QK_MOUSE_WHEEL_LEFT);
             }
         } else {
-            // Page Up/Down
+            // Mouse wheel up/down
             if (clockwise) {
-                tap_code(KC_PGDN);
+                tap_code(QK_MOUSE_WHEEL_UP);
             } else {
-                tap_code(KC_PGUP);
+                tap_code(QK_MOUSE_WHEEL_DOWN);
             }
         }
     }
