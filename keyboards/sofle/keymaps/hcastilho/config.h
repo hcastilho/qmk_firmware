@@ -9,3 +9,7 @@ for more options.
     #undef ENCODER_RESOLUTION
 #endif
 #define ENCODER_RESOLUTION 4
+
+
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD

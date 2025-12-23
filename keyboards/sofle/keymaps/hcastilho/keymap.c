@@ -28,41 +28,11 @@ uint16_t alt_tab_timer = 0;
 #define KC_PASTE LCTL(LSFT(KC_V))
 
 // ********************************************************
-// Tap Dance: Double tap shift for caps lock word
+// Tap Dance
 // ********************************************************
-// 1. Define the Tap Dance Enum
-enum {
-    TD_SFT_CAPS = 0
-};
-
-// 2. Define the "Finished" function
-// This runs when the tapping term expires or you press another key
-void shift_caps_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single Tap/Hold: Act as Shift
-        register_code(KC_LSFT);
-    } else if (state->count == 2) {
-        // Double Tap: Toggle Caps Lock
-        tap_code16(CW_TOGG);
-    }
-}
-
-// 3. Define the "Reset" function
-// This runs when the key is released
-void shift_caps_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Release Shift
-        unregister_code(KC_LSFT);
-    }
-    // No need to reset Caps Lock (it's a toggle)
-}
-
-// 4. Register the Tap Dance Action
-tap_dance_action_t tap_dance_actions[] = {
-    // Action: Advanced (Calls our custom functions)
-    [TD_SFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_caps_finished, shift_caps_reset)
-};
+//
 // ********************************************************
+
 
 // **********************************************
 // Combo Configuration
@@ -124,10 +94,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_QWERTY] = LAYOUT(
-  KC_GRV,           KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_GRV,
-  KC_ESC,           KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
-  KC_TAB,           KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
-  TD(TD_SFT_CAPS),  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENT,    KC_APP, KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
+  KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_GRV,
+  KC_ESC,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
+  KC_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_ENT,       KC_APP, KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
                  KC_LGUI,KC_LALT,  KC_LCTL,  KC_SPC, MO(_LOWER),   MO(_RAISE),  KC_ENT, KC_RCTL, KC_RALT, KC_RGUI
 ),
 /*
@@ -212,7 +182,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ADJUST] = LAYOUT(
   QK_BOOT, XXXXXXX,  XXXXXXX,  XXXXXXX,    XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, KC_QWERTY, KC_COLEMAK, XXXXXXX, XXXXXXX,                       MS_WHLD, MS_BTN1, MS_UP, MS_BTN2, MS_WHLU, XXXXXXX,
-  XXXXXXX, XXXXXXX, KC_VOLD,   KC_MUTE,    KC_VOLU, CG_TOGG,                       MS_WHLL, MS_LEFT, MS_DOWN, MS_RGHT, MS_WHLR, XXXXXXX,X,
+  XXXXXXX, XXXXXXX, KC_VOLD,   KC_MUTE,    KC_VOLU, CG_TOGG,                       MS_WHLL, MS_LEFT, MS_DOWN, MS_RGHT, MS_WHLR, XXXXXXX,
   XXXXXXX, XXXXXXX, KC_MPRV,   KC_MPLY,    KC_MNXT, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
   )
