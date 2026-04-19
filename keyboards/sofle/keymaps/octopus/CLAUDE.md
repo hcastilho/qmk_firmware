@@ -57,9 +57,16 @@ implemented on this keymap; the rest are open.
   instantly. Toggle with `TG(_GAMING)` from ADJUST layer (the key where
   Colemak used to be).
 
-- **Layer-tap on space thumb**
-  `LT(_LOWER, KC_SPC)` — space when tapped, LOWER when held. Frees a thumb
-  slot for something else (Backspace? Hyper?).
+- **[done] Layer-tap on thumbs (symmetric)**
+  Left inner: `LT(_LOWER, KC_SPC)` — tap=Space, hold=LOWER.
+  Right inner: `LT(_RAISE, KC_ENT)` — tap=Enter, hold=RAISE.
+  Freed slots: left=`KC_TAB`, right=`KC_BSPC`. Gaming layer keeps plain
+  Space/Enter and standalone `MO(_LOWER)`/`MO(_RAISE)` so games see
+  instant keys with no tap-hold delay.
+  *Watch out:* fast typing can falsely trigger the layer (e.g. `space + c`
+  too quick → `c` fires on LOWER as `#`). If it misbehaves, add
+  `TAPPING_TERM_PER_KEY` to give space/enter a longer term, or remove
+  `HOLD_ON_OTHER_KEY_PRESS` for those two keys.
 
 - **[done] Drop `JK`→Esc and `DF`→4-spaces combos**
   Removed entirely (along with `COMBO_ENABLE` and `KC_4SPC`). Esc and Tab
