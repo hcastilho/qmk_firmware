@@ -69,34 +69,33 @@ RAISE is the right thumb. Hold RAISE then test:
 - [ ] `RAISE + LEND` → line end (End)
 - [ ] `RAISE + DLINE` → delete word backward (Ctrl+Backspace)
 
-## Layer-tap on thumbs (new)
+## Thumb cluster (new layout)
 
-Inner left thumb: `LT(_LOWER, KC_SPC)` (tap=Space, hold=LOWER).
-Inner right thumb: `LT(_RAISE, KC_ENT)` (tap=Enter, hold=RAISE).
-Old `MO(_LOWER)` slot → `KC_TAB`. Old `MO(_RAISE)` slot → `KC_BSPC`.
+Final positions (outer → inner):
+- Left:  ESC | HYPR | DEL | SPC | LT(LOWER, TAB)
+- Right: LT(RAISE, ENT) | BSPC | DEL | MEH | TG(_GAMING)
 
-### Tap behavior
-- [ ] Single tap of left inner thumb → space
-- [ ] Single tap of right inner thumb → enter
-- [ ] Fast typing across spaces (e.g. "the quick brown fox") — no false
-      LOWER triggers; sentence types correctly with normal letters
-- [ ] Words ending with newline (press enter quickly mid-typing) — no false
-      RAISE triggers
-- [ ] Hold space for >200ms then release without other keys → no `space`
-      typed (it became a layer hold)
+### Plain keys
+- [ ] Outer-left → Esc
+- [ ] 2nd-from-outer left → Hyper (verify Ctrl+Alt+Shift+GUI sent; e.g.
+      `xev` on Linux, or bind in Hammerspoon/AutoHotkey/sxhkd)
+- [ ] 3rd-from-outer left → forward Delete
+- [ ] 4th-from-outer left → Space
+- [ ] Inner-most right → Backspace (and hold-to-repeat-delete still works)
+- [ ] 3rd-from-outer right → forward Delete
+- [ ] 2nd-from-outer right → Meh (verify Ctrl+Alt+Shift sent)
+- [ ] Outer-right → toggles `_GAMING` directly (no ADJUST needed)
 
-### Hold behavior
-- [ ] Hold left inner + tap a number key → LOWER symbol fires (e.g. `1`→`!`)
-- [ ] Hold right inner + tap H/J/K/L → arrow keys (RAISE)
-- [ ] Hold right inner + tap word-nav keys (PRVWD etc.) → still works
+### Layer-tap
+- [ ] Inner-most left tapped → Tab
+- [ ] Inner-most left held + number key → LOWER symbol (e.g. `1`→`!`)
+- [ ] 2nd-from-inner right tapped → Enter
+- [ ] 2nd-from-inner right held + H/J/K/L → arrow keys (RAISE)
+- [ ] 2nd-from-inner right held + word-nav keys (PRVWD etc.) → still works
 
-### Freed slots
-- [ ] Left freed slot (was MO LOWER) → Tab
-- [ ] Right freed slot (was MO RAISE) → Backspace
-
-### Known risk to watch for
-- [ ] Misfire count: how many times per session does LOWER/RAISE
-      activate when you meant just space/enter? Note rough number.
+### Misfire watch
+- [ ] Type fast — does LOWER/RAISE ever fire when you meant just Tab/Enter?
+      Note rough count per session.
 
 ## Gaming layer
 

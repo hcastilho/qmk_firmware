@@ -57,16 +57,25 @@ implemented on this keymap; the rest are open.
   instantly. Toggle with `TG(_GAMING)` from ADJUST layer (the key where
   Colemak used to be).
 
-- **[done] Layer-tap on thumbs (symmetric)**
-  Left inner: `LT(_LOWER, KC_SPC)` — tap=Space, hold=LOWER.
-  Right inner: `LT(_RAISE, KC_ENT)` — tap=Enter, hold=RAISE.
-  Freed slots: left=`KC_TAB`, right=`KC_BSPC`. Gaming layer keeps plain
-  Space/Enter and standalone `MO(_LOWER)`/`MO(_RAISE)` so games see
-  instant keys with no tap-hold delay.
-  *Watch out:* fast typing can falsely trigger the layer (e.g. `space + c`
-  too quick → `c` fires on LOWER as `#`). If it misbehaves, add
-  `TAPPING_TERM_PER_KEY` to give space/enter a longer term, or remove
-  `HOLD_ON_OTHER_KEY_PRESS` for those two keys.
+- **[done] Thumb cluster redesign**
+  Six outer thumb keys were LGUI/LAlt/LCtl/RCtl/RAlt/RGUI — all redundant
+  now that home row mods cover them. Final layout (outer → inner):
+  - Left:  `ESC` | `HYPR` | `DEL` | `SPC` | `LT(LOWER, TAB)`
+  - Right: `LT(RAISE, ENT)` | `BSPC` | `DEL` | `MEH` | `TG(_GAMING)`
+
+  Decisions:
+  - **LT lives on Tab/Enter, not Space/Backspace.** Misfires hurt less on
+    rarely-pressed keys, and we don't lose hold-to-repeat on Backspace.
+  - **LT at innermost thumb position** matches `MO(_LOWER)`/`MO(_RAISE)`
+    in `_GAMING` — same physical key triggers the layer in both modes.
+  - **Esc** replaces the dropped JK combo.
+  - **Hyper/Meh** open up an OS-script namespace (Hammerspoon /
+    AutoHotkey / sxhkd).
+  - **Forward-Delete** on both thumbs.
+  - **TG(_GAMING)** outer-right (hardest to mispress).
+  - Gaming layer thumbs untouched (plain Space/Enter, standalone MO).
+  - *Watch out:* fast `tab + next-key` could trigger LOWER falsely. If it
+    misbehaves, add `TAPPING_TERM_PER_KEY` for these two keys.
 
 - **[done] Drop `JK`→Esc and `DF`→4-spaces combos**
   Removed entirely (along with `COMBO_ENABLE` and `KC_4SPC`). Esc and Tab
