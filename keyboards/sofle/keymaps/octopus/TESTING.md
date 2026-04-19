@@ -102,7 +102,8 @@ Old `MO(_LOWER)` slot → `KC_TAB`. Old `MO(_RAISE)` slot → `KC_BSPC`.
 
 - [ ] From base: hold LOWER+RAISE (enters ADJUST), tap the gaming toggle key
       (top row, position where Colemak used to be — `KC_E` slot)
-- [ ] OLED shows `Game`
+- [ ] OLED shows `Game` AND inverts (white background) on both halves
+- [ ] Toggle off → OLEDs return to normal (black background)
 - [ ] Letters type as plain QWERTY (no HRM lag, no false mods)
 - [ ] WASD work as raw keys for movement
 - [ ] Spacebar works instantly with no tap-vs-hold delay

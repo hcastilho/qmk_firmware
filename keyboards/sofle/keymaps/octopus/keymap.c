@@ -225,6 +225,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 bool oled_task_user(void) {
+    oled_invert(IS_LAYER_ON(_GAMING));
     if (is_keyboard_master()) {
         print_status_narrow();
     } else {

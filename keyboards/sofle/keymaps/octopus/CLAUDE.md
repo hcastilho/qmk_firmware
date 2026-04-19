@@ -77,9 +77,9 @@ implemented on this keymap; the rest are open.
   `DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD`. Could also expose `CW_TOGG`
   explicitly on RAISE in place of plain `KC_CAPS`.
 
-- **Visual indicator for gaming mode**
-  Underglow color or OLED highlight when `_GAMING` is active. OLED already
-  prints "Game" — could add RGB.
+- **[done] Visual indicator for gaming mode**
+  Both OLEDs invert (white background) when `_GAMING` is active via
+  `oled_invert()` in `oled_task_user`. No RGB on this board.
 
 ### Bigger redesigns (later)
 
